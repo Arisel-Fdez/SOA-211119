@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Notifications</title>
+</head>
+<body>
+    <h1>WebSocket Notifications</h1>
+    <ul id="notification-list"></ul>
+
+    <script>
+        const socket = new WebSocket("ws://127.0.0.1:8000/ws");
+
+        socket.onopen = (event) => {
+            console.log("WebSocket connected");
+        };
+
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            const notificationList = document.getElementById("notification-list");
+            const newItem = document.createElement("li");
+            newItem.textContent = data.message;
+            notificationList.appendChild(newItem);
+        };
+
+        socket.onclose = (event) => {
+            console.log("WebSocket disconnected");
+        };
+
+        socket.onerror = (event) => {
+            console.error("WebSocket error:", event);
+        };
+    </script>
+</body>
+</html>
